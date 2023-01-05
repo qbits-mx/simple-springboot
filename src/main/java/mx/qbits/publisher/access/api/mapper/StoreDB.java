@@ -141,11 +141,11 @@ public class StoreDB {
         String q = "";
         q = q + "create table sync(";
         q = q + "  id int(11) not null auto_increment,";
-        q = q + "  correo varchar(100) not null,";
-        q = q + "  telefono varchar(100) not null,";
-        q = q + "  curp varchar(20) not null,";
-        q = q + "  nombreCompleto varchar(60) not null,";
-        q = q + "  linkedin varchar(100) not null,";
+        q = q + "  correo varchar(70) not null,"; // gustavo.arellanos@ultrasist.com.mx <-- 35 chars
+        q = q + "  telefono varchar(32) not null,"; // +52 55 1691 3070 <-- 16 chars
+        q = q + "  curp varchar(25) not null,"; // AESG 671022 HAS RNS12 <-- 21 chars
+        q = q + "  nombreCompleto varchar(60) not null,"; // María Verónica Martinez de la Vega y Mansilla <-- 45 chars
+        q = q + "  linkedin varchar(100) not null,"; // https://www.linkedin.com/in/gustavo-adolfo-arellano-sandoval-085021b0/ <-- 70 chars 
         q = q + "  idUser int(11) not null,";
         q = q + "  primary key(id),";
         q = q + "  UNIQUE KEY idx_sync_correo (correo)";
