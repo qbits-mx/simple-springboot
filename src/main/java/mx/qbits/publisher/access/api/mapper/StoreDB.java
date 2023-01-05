@@ -154,18 +154,14 @@ public class StoreDB {
     }
     
     public void reset() throws SQLException {
-        String query="update mdl_user set firstaccess=0, lastaccess=0, lastlogin=0, currentlogin=0 where username like 'student%';";
+        String hashed = Generator.genHashed("UrbiEtOrbi1");
+        String query="update mdl_user set firstaccess=0, lastaccess=0, lastlogin=0, currentlogin=0, password='" + hashed + "' where username like 'student%';";
         log.info(query);
         Statement stmt = c.createStatement();
         stmt.execute(query);
-        // now, lets change the passwords
-        for(int i=1; i<=99; i++) {
-            String n = i<10?"0"+i:""+i;
-            String clearPassword = "Password_" + n;
-            String hashed = Generator.genHashed(clearPassword);
-            query = "update mdl_user set password='"+hashed+"' where username = 'student"+n+"';";
-            stmt.execute(query);
-        }
+        // now, lets delete sync
+        query = "delete from sync;";
+        stmt.execute(query);
         stmt.close();
     }
 
