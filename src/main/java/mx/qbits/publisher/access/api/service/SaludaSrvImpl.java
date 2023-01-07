@@ -22,7 +22,7 @@ public class SaludaSrvImpl implements SaludaSrv {
     
     @Override
     public String getId() {
-        String result = "{'id':'"+this.uid+"'}";
+        String result = "{'uid':'"+this.uid+"'}";
         return result.replace('\'', '\"');
     }
 
