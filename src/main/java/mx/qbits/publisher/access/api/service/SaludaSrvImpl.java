@@ -20,8 +20,10 @@ public class SaludaSrvImpl implements SaludaSrv {
         return respuesta;
     }
     
+    @Override
     public String getId() {
-        return this.uid;
+        String result = "{'id':'"+this.uid+"'}";
+        return result.replace('\'', '\"');
     }
 
 }
