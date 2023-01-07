@@ -9,6 +9,7 @@ import mx.qbits.publisher.access.api.utils.Generator;
 @Slf4j
 @Service
 public class SaludaSrvImpl implements SaludaSrv {
+    private String uid = Generator.getRandomString(10);
 
     @Override
     public Response hello(String nombre) throws ControllerException {
@@ -17,6 +18,10 @@ public class SaludaSrvImpl implements SaludaSrv {
         respuesta.setUser(nombre);
         respuesta.setPassword(Generator.getRandomString(10));
         return respuesta;
+    }
+    
+    public String getId() {
+        return this.uid;
     }
 
 }
