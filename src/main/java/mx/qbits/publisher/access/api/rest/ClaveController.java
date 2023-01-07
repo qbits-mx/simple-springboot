@@ -24,4 +24,12 @@ public class ClaveController {
     public Response reset(@PathVariable("nombre") String nombre) throws ControllerException {
         return saludaSrv.hello(nombre);
     }
+    
+    @GetMapping(
+            value = "/id",
+            produces = "application/json; charset=utf-8")
+    public String getId() {
+        return saludaSrv.getId();
+    }
+    
 }
