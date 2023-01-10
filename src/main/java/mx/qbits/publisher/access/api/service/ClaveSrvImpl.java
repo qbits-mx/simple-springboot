@@ -46,6 +46,9 @@ public class ClaveSrvImpl implements ClaveSrv {
         } catch (Exception e) {
             Response response = new Response();
             response.setError(e.toString());
+            Map<String, String> map = new HashMap<>();
+            map.put("error", e.toString());
+			sendMail("plantilla.html","Error de artemisa","garellanos@ultrasist.com.mx", map);
             return response;
         }
     }
