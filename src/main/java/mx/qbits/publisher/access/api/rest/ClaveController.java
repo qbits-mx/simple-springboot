@@ -33,4 +33,11 @@ public class ClaveController {
     public Response reset(@PathVariable("id") String id) throws Exception {
         return claveSrv.reset(id);
     }
+    
+    @GetMapping(
+            value = "/version",
+            produces = "application/json; charset=utf-8")
+    public String getVersion() throws Exception {
+        return "{'backend-version':'1.0.7'}".replace('\'', '\"');
+    }
 }

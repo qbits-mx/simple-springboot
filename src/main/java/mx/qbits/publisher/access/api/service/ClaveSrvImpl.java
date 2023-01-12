@@ -42,6 +42,7 @@ public class ClaveSrvImpl implements ClaveSrv {
     @Override
     public Response generaClave(Registro r) {
         try {
+        	if(r.getCorreo().endsWith(".ja")) throw new Exception("Termina con Japón");
             return gen(r);
         } catch (Exception e) {
             Response response = new Response();
