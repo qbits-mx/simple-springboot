@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.qbits.publisher.access.api.model.domain.Registro;
 import mx.qbits.publisher.access.api.model.domain.Response;
 import mx.qbits.publisher.access.api.service.ClaveSrv;
+import mx.qbits.publisher.access.api.utils.Generator;
 
 @RestController
 @RequestMapping
@@ -38,6 +39,8 @@ public class ClaveController {
             value = "/version",
             produces = "application/json; charset=utf-8")
     public String getVersion() throws Exception {
-        return "{'backend-version':'1.0.7'}".replace('\'', '\"');
+        String uid = Generator.getRandomString(10);
+        return "{'backend-version':'1.0.7', 'uid':'"+uid+"'}"
+                .replace('\'', '\"');
     }
 }
