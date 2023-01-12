@@ -61,7 +61,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .allowedMethods("GET", "POST","PUT", "DELETE", "OPTIONS", "HEAD");
         /**/
     }
-    
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

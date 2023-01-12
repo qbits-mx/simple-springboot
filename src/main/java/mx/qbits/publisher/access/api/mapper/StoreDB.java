@@ -9,12 +9,12 @@ import mx.qbits.publisher.access.api.utils.Generator;
 @Slf4j
 public class StoreDB {
     private Connection c = null;
-    
+
     public StoreDB(String driver, String url, String user, String pass) throws SQLException {
         c = getConnection(driver, url, user, pass);
         this.createIfNotExist();
     }
-    
+
     private Connection getConnection(String driver, String url, String user, String pass) throws SQLException {
         log.info("Getting connection to DB...");
         try {
@@ -25,17 +25,17 @@ public class StoreDB {
             return null;
         }
     }
-    
+
     public void done() throws SQLException {
         c.close();
     }
 
     /**
      * Actualiza el campo 'password' de la tabla 'mdl_user' para cierta llave id.
-     * 
+     *
      * @param hashed Valor de actualización
      * @param id llave de actualización
-     * 
+     *
      * @throws SQLException
      */
     public void actualiza(String hashed, int id) throws SQLException {
@@ -52,31 +52,31 @@ public class StoreDB {
         stmt.executeUpdate(query);
         stmt.close();
     }
-    
+
     /**
      * Inserta el correo y el id en la custom table 'sync'.
-     * 
+     *
      * @param correo
      * @param id
      * @throws SQLException
      */
     public void sicroniza(Registro r, int idUser) throws SQLException {
         String query = "INSERT INTO sync(correo, telefono, curp, nombreCompleto, linkedin, iduser) values('"
-        + r.getCorreo()         + "', '" 
-        + r.getTelefono()       + "', '" 
-        + r.getCurp()           + "', '" 
-        + r.getNombreCompleto() + "', '" 
-        + r.getLinkedin()       + "', " 
+        + r.getCorreo()         + "', '"
+        + r.getTelefono()       + "', '"
+        + r.getCurp()           + "', '"
+        + r.getNombreCompleto() + "', '"
+        + r.getLinkedin()       + "', "
         + idUser                + ")";
         log.info(query);
         Statement stmt = c.createStatement();
         stmt.execute(query);
         stmt.close();
     }
-    
+
     /**
      * Indica si existe en la tabla 'sync' un correo dado.
-     * 
+     *
      * @param correo
      * @return
      * @throws SQLException
@@ -91,11 +91,11 @@ public class StoreDB {
         stmt.close();
         return r;
     }
-    
+
     /**
-     * Regresa el primer ID de la tabla 'mdl_user' cuyo campo 
+     * Regresa el primer ID de la tabla 'mdl_user' cuyo campo
      * lastaccess sea mas viejo que un valor dado.
-     * 
+     *
      * @param olderThan
      * @return
      * @throws SQLException
@@ -114,7 +114,7 @@ public class StoreDB {
         stmt.close();
         return par;
     }
-    
+
     private void createIfNotExist() {
         try {
             String query = "SELECT * from sync";
@@ -136,7 +136,7 @@ public class StoreDB {
             }
         }
     }
-    
+
     private String getQuery() {
         String q = "";
         q = q + "create table sync(";
@@ -145,14 +145,14 @@ public class StoreDB {
         q = q + "  telefono varchar(32) not null,"; // +52 55 1691 3070 <-- 16 chars
         q = q + "  curp varchar(25) not null,"; // AESG 671022 HAS RNS12 <-- 21 chars
         q = q + "  nombreCompleto varchar(60) not null,"; // María Verónica Martinez de la Vega y Mansilla <-- 45 chars
-        q = q + "  linkedin varchar(100) not null,"; // https://www.linkedin.com/in/gustavo-adolfo-arellano-sandoval-085021b0/ <-- 70 chars 
+        q = q + "  linkedin varchar(100) not null,"; // https://www.linkedin.com/in/gustavo-adolfo-arellano-sandoval-085021b0/ <-- 70 chars
         q = q + "  idUser int(11) not null,";
         q = q + "  primary key(id),";
         q = q + "  UNIQUE KEY idx_sync_correo (correo)";
         q = q + ");";
         return q;
     }
-    
+
     public void reset() throws SQLException {
         String hashed = Generator.genHashed("UrbiEtOrbi1");
         String query="update mdl_user set firstaccess=0, lastaccess=0, lastlogin=0, currentlogin=0, password='" + hashed + "' where username like 'student%';";

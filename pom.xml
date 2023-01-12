@@ -34,7 +34,7 @@
             <url>https://repo1.maven.org</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <!-- Pure Spring -->
         <dependency>

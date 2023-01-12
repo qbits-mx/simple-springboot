@@ -23,7 +23,7 @@ import mx.qbits.publisher.access.api.utils.Generator;
 @Service
 public class ClaveSrvImpl implements ClaveSrv {
     private final RestTemplate restTemplate;
-    
+
     @Value("${db_url}")
     private String url;
     @Value("${db_user}")
@@ -34,7 +34,7 @@ public class ClaveSrvImpl implements ClaveSrv {
     private String driver;
     @Value("${app.mail.server}")
     private String appMailServer;
-    
+
     public ClaveSrvImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -42,18 +42,18 @@ public class ClaveSrvImpl implements ClaveSrv {
     @Override
     public Response generaClave(Registro r) {
         try {
-        	if(r.getCorreo().endsWith(".ja")) throw new Exception("Termina con Japón");
+            if(r.getCorreo().endsWith(".ja")) throw new Exception("Termina con Japón");
             return gen(r);
         } catch (Exception e) {
             Response response = new Response();
             response.setError(e.toString());
             Map<String, String> map = new HashMap<>();
             map.put("error", e.toString());
-			sendMail("plantilla.html","Error de artemisa","garellanos@ultrasist.com.mx", map);
+            sendMail("plantilla.html","Error de artemisa","garellanos@ultrasist.com.mx", map);
             return response;
         }
     }
-    
+
     private Response gen(Registro r) throws Exception {
         Response response = new Response();
         String val = valida(r);
@@ -61,28 +61,28 @@ public class ClaveSrvImpl implements ClaveSrv {
             response.setError("Datos incorrectos: " + val);
             return response;
         }
-        
+
         StoreDB st = new StoreDB(driver, url, user, pass);
         if(st.registrado(r.getCorreo())) {
             response.setError("El registro sólo se permite una sola vez");
             st.done();
             return response;
         }
-        
+
         response = Generator.generaClave();
-        
+
         Par par = st.obtenId(response.getOlderThan());
         if(par.getId()>0) {
             response.setUser(par.getUsername());
             st.actualiza(response.getHashed(), par.getId());
             st.sicroniza(r, par.getId());
             st.done();
-            this.sendMail(response, r); 
+            this.sendMail(response, r);
             /**/
-            String s = this.sendSms(r.getTelefono(), 
+            String s = this.sendSms(r.getTelefono(),
                     "Gracias por tu registro !!! " +
-                    "Ve a http://artemisa.ultrasist.net/login/index.php y entra " 
-                    + " con el usuario: " + response.getUser() 
+                    "Ve a http://artemisa.ultrasist.net/login/index.php y entra "
+                    + " con el usuario: " + response.getUser()
                     + " y el password: " + response.getGen());
             log.info(s);
             /**/
@@ -107,29 +107,29 @@ public class ClaveSrvImpl implements ClaveSrv {
         log.info("validating");
         return "";
     }
-    
+
     private EmailMessageResponse sendMail(
-            String nombrePlantillaCorreo, 
-            String title, 
-            String to, 
+            String nombrePlantillaCorreo,
+            String title,
+            String to,
             Map<String, String> mapa) {
         EmailMessageRequest emr = new EmailMessageRequest();
         emr.setTemplate(nombrePlantillaCorreo);
         emr.setTitle(title);
         emr.setTo(to);
         emr.setValues(mapa);
-        
+
         String endpoint = appMailServer + "api/send-mail";
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<EmailMessageRequest> entity = new HttpEntity<>(emr, headers);
         return restTemplate.postForObject(endpoint, entity, EmailMessageResponse.class);
     }
-    
+
     private String sendSms(String tel, String msg) {
         SmsMessageRequest m = new SmsMessageRequest();
         m.setTelefono(tel);
         m.setMensaje(msg);
-        
+
         HttpHeaders headers = new HttpHeaders();
         String endpoint = "https://sms.qbits.mx/send";
         headers.add("credentials", "hola_mundo");

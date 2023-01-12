@@ -14,9 +14,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Registro {
-    
+
     @ApiModelProperty(example = "Miguel Hidalgo y Costilla")
-    @NotBlank(message = "Escribe tu nombre completo")    
+    @NotBlank(message = "Escribe tu nombre completo")
     private String nombreCompleto;
 
     @ApiModelProperty(example = "example@hotmail.com")
@@ -27,28 +27,28 @@ public class Registro {
     @ApiModelProperty(example = "5543562126")
     @Pattern(regexp="^\\d{10}$", message = "Teléfono inválido, deben ser exactamente 10 números sin expacios")
     private String telefono;
-    
+
     private String linkedin;
-    
+
     @Size(min = 10, max=19, message = "El CURP tiene una estructura inválida")
     private String curp;
 
     /** /
     @Override
     public String toString() {
-        return "PreRegistroRequest ["+ 
-                "  id=" + id + 
-                ", nick=" + nick + 
-                ", correo=" + correo + 
-                ", claveHash=" + claveHash + 
-                ", telefono=" + telefono + 
-                ", fechaNacimiento=" + fechaNacimiento + 
-                ", randomString=" + randomString + 
-                ", instanteRegistro=" + instanteRegistro + 
+        return "PreRegistroRequest ["+
+                "  id=" + id +
+                ", nick=" + nick +
+                ", correo=" + correo +
+                ", claveHash=" + claveHash +
+                ", telefono=" + telefono +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", randomString=" + randomString +
+                ", instanteRegistro=" + instanteRegistro +
                 "]";
     }
 
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -64,19 +64,19 @@ public class Registro {
         return result;
     }
 
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Registro)) return false;
         Registro that = (Registro) o;
-        return 
-            id == that.id && 
-            instanteRegistro == that.instanteRegistro && 
+        return
+            id == that.id &&
+            instanteRegistro == that.instanteRegistro &&
             Objects.equals(nick, that.nick) &&
-            Objects.equals(correo, that.correo) && 
+            Objects.equals(correo, that.correo) &&
             Objects.equals(claveHash, that.claveHash) &&
-            Objects.equals(telefono, that.telefono) && 
+            Objects.equals(telefono, that.telefono) &&
             Objects.equals(fechaNacimiento, that.fechaNacimiento) &&
             Objects.equals(randomString, that.randomString);
     }

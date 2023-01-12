@@ -15,25 +15,25 @@ import mx.qbits.publisher.access.api.service.ClaveSrv;
 @RequestMapping
 public class ClaveController {
     private ClaveSrv claveSrv;
-    
+
     public ClaveController(ClaveSrv claveSrv) {
         this.claveSrv = claveSrv;
     }
-    
+
     @PostMapping(
             value = "/generate",
             produces = "application/json; charset=utf-8")
     public Response generate(@RequestBody Registro reg) throws Exception {
         return claveSrv.generaClave(reg);
     }
-    
+
     @GetMapping(
             value = "/reset/{id}",
             produces = "application/json; charset=utf-8")
     public Response reset(@PathVariable("id") String id) throws Exception {
         return claveSrv.reset(id);
     }
-    
+
     @GetMapping(
             value = "/version",
             produces = "application/json; charset=utf-8")
