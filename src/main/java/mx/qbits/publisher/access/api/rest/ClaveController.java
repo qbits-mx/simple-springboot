@@ -15,6 +15,7 @@ import mx.qbits.publisher.access.api.utils.Generator;
 @RestController
 @RequestMapping
 public class ClaveController {
+    private String uid = Generator.getRandomString(10);
     private ClaveSrv claveSrv;
 
     public ClaveController(ClaveSrv claveSrv) {
@@ -39,7 +40,6 @@ public class ClaveController {
             value = "/version",
             produces = "application/json; charset=utf-8")
     public String getVersion() throws Exception {
-        String uid = Generator.getRandomString(10);
         return "{'backend-version':'1.0.7', 'uid':'"+uid+"'}"
                 .replace('\'', '\"');
     }
